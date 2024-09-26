@@ -1,25 +1,43 @@
+using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _force;
+    [SerializeField] private ParticleSystem _shootEffect;
+
 
     private float _timeDestroy = 2f;
+
+    private void Awake()
+    {
+        _shootEffect = GetComponentInChildren<ParticleSystem>();
+    }
+
+    public void ShootEffect( Collector collector)
+    {
+        if (_shootEffect != null)
+        {
+            _shootEffect.transform.position = collector.transform.position;
+            _shootEffect.Play();
+        }
+    }
 
     public void Launch(Vector3 diraction)
     {
         _rigidbody.AddForce(diraction * _force, ForceMode.Impulse);
-        Debug.Log("Выстрел");
     }
+    
+    
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnTriggerEnter(Collider other)
     {
-        Obstacle obstacle = collision.gameObject.GetComponent<Obstacle>();
+        Obstacle obstacle = other.GetComponent<Obstacle>();
 
         if (obstacle != null)
         {
-           Destroy(obstacle.gameObject);
+            Destroy(obstacle.gameObject);
         }
     }
 
@@ -27,4 +45,6 @@ public class Bullet : MonoBehaviour
     {
         Destroy(gameObject, _timeDestroy);
     }
+
+    
 }

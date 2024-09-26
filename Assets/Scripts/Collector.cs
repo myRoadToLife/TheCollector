@@ -18,21 +18,32 @@ public class Collector : MonoBehaviour
 
     private void Update()
     {
-        _xInput = Input.GetAxisRaw("Horizontal");
-        _yInput = Input.GetAxisRaw("Vertical");
+        Vector3 direction = UserInput();
 
-        Vector3 direction = new Vector3(_xInput, 0, _yInput).normalized;
+        MovementAndRotation(direction);
 
-        if(direction.magnitude >= 0.01f)
+    }
+
+    private void MovementAndRotation(Vector3 direction)
+    {
+        if (direction.magnitude >= 0.01f)
         {
             _characterController.Move(direction * (_moveSpeed * Time.deltaTime));
 
             Quaternion toRotation = Quaternion.LookRotation(direction, Vector3.up);
             transform.rotation = Quaternion.RotateTowards(transform.rotation, toRotation, _rotationSpeed * Time.deltaTime);
         }
-
     }
 
+    private Vector3 UserInput()
+    {
+        _xInput = Input.GetAxisRaw("Horizontal");
+        _yInput = Input.GetAxisRaw("Vertical");
+
+        Vector3 direction = new Vector3(_xInput, 0f, _yInput).normalized;
+
+        return direction;
+    }
 
     public void AddHealth(int health)
     {
