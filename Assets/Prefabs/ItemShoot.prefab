@@ -10,10 +10,10 @@ GameObject:
   m_Component:
   - component: {fileID: 5360979742987308280}
   - component: {fileID: -1833377527464171146}
-  - component: {fileID: -8269930320039027122}
-  - component: {fileID: 3098732423536323307}
-  - component: {fileID: 6086345494273505664}
   - component: {fileID: 4760808243369290244}
+  - component: {fileID: 3098732423536323307}
+  - component: {fileID: 2635839776775738616}
+  - component: {fileID: 6086345494273505664}
   m_Layer: 0
   m_Name: ItemShoot
   m_TagString: Untagged
@@ -51,19 +51,28 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bulletPrefab: {fileID: 4474100164927059174, guid: ded1461d57c0c8143bc368c09bea762e, type: 3}
   _bulletSpeed: 5
---- !u!114 &-8269930320039027122
-MonoBehaviour:
+  _shotEffect: {fileID: 0}
+--- !u!65 &4760808243369290244
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2590841020669158575}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
   m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87671f13b9d264cb8671aabab06409, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _shotEffect: {fileID: 0}
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &3098732423536323307
 MeshFilter:
   m_ObjectHideFlags: 0
@@ -72,6 +81,21 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2590841020669158575}
   m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!114 &2635839776775738616
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2590841020669158575}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08e0af07c8f45ce4882fcf0c727888f4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _bulletPrefab: {fileID: 4474100164927059174, guid: ded1461d57c0c8143bc368c09bea762e, type: 3}
+  _bulletSpeed: 5
+  _shotEffect: {fileID: 1355222385137409736}
 --- !u!23 &6086345494273505664
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -114,27 +138,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &4760808243369290244
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2590841020669158575}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &3857226647999489991
 GameObject:
   m_ObjectHideFlags: 0

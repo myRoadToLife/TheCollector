@@ -7,13 +7,13 @@ public class ItemShellShot : Item
     [SerializeField] private ParticleSystem _shotEffect;
 
 
-    protected override void ProcessPickupItem(Collector collector)
+    public override void ProcessPickupItem(Collector collector)
     {
         Bullet bulletInstance = Instantiate(_bulletPrefab, collector.transform.position, Quaternion.identity);
         bulletInstance.Launch(collector.transform.forward);
 
         bulletInstance.ShootEffect(collector);
 
-        
+
     }
 }

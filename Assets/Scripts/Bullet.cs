@@ -1,4 +1,3 @@
-using System.Collections.ObjectModel;
 using UnityEngine;
 
 public class Bullet : MonoBehaviour
@@ -6,6 +5,7 @@ public class Bullet : MonoBehaviour
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _force;
     [SerializeField] private ParticleSystem _shootEffect;
+
 
 
     private float _timeDestroy = 2f;

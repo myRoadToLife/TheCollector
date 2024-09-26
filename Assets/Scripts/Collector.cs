@@ -6,22 +6,80 @@ public class Collector : MonoBehaviour
     [SerializeField] private float _moveSpeed;
     [SerializeField] private float _rotationSpeed;
 
-    private CharacterController _characterController;
-
     private float _xInput;
     private float _yInput;
+
+    private Item _item;
+    private CharacterController _characterController;
+
+    private bool _isCollectorInTrigger = false;
+
+    private Vector3 _offsetPositionToSetParent = new Vector3(0f, 0f, 1.5f);
 
     private void Awake()
     {
         _characterController = GetComponent<CharacterController>();
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        Item item = other.GetComponent<Item>();
+
+        if (item != null)
+        {
+            _item = item;
+            _isCollectorInTrigger = true;
+
+            bool hasItem = false;
+
+            foreach (Transform child in transform)
+            {
+                if (child.gameObject.GetComponent<Item>())
+                {
+                    hasItem = true;
+                    Debug.Log("Сборщик уже держит предмет: " + child.name);
+                    break;
+                }
+            }
+
+            if (hasItem == false)
+            {
+                _item.transform.SetParent(transform);
+                _item.transform.localPosition = _offsetPositionToSetParent;
+                Debug.Log("Сборщик подобрал предмет: " + _item.name);
+            }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (_item != null && other.GetComponent<Item>() == _item)
+        {
+            _isCollectorInTrigger = false;
+            _item = null;
+        }
+    }
+
     private void Update()
     {
         Vector3 direction = UserInput();
-
         MovementAndRotation(direction);
 
+        if (_isCollectorInTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            if (_item != null)
+            {
+                _item.ProcessPickupItem(this);
+                Destroy(_item.gameObject);
+
+                _item = null;
+                _isCollectorInTrigger = false;
+            }
+        }
+        else if (!_isCollectorInTrigger && Input.GetKeyDown(KeyCode.F))
+        {
+            Debug.Log("У сборщика ничего нет!");
+        }
     }
 
     private void MovementAndRotation(Vector3 direction)
@@ -40,9 +98,7 @@ public class Collector : MonoBehaviour
         _xInput = Input.GetAxisRaw("Horizontal");
         _yInput = Input.GetAxisRaw("Vertical");
 
-        Vector3 direction = new Vector3(_xInput, 0f, _yInput).normalized;
-
-        return direction;
+        return new Vector3(_xInput, 0f, _yInput).normalized;
     }
 
     public void AddHealth(int health)
@@ -54,7 +110,6 @@ public class Collector : MonoBehaviour
         }
 
         _health += health;
-
         Debug.Log($"Твоё здоровье: {_health}");
     }
 
@@ -67,8 +122,6 @@ public class Collector : MonoBehaviour
         }
 
         _moveSpeed += speed;
-
         Debug.Log($"Твоя скорость: {_moveSpeed}");
     }
-
 }
