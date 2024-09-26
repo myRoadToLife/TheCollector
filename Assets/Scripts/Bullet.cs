@@ -4,7 +4,7 @@ public class Bullet : MonoBehaviour
 {
     [SerializeField] private Rigidbody _rigidbody;
     [SerializeField] private float _force;
-    [SerializeField] private ParticleSystem _shootEffect;
+    //[SerializeField] private ParticleSystem _shootEffect;
 
 
 
@@ -12,17 +12,17 @@ public class Bullet : MonoBehaviour
 
     private void Awake()
     {
-        _shootEffect = GetComponentInChildren<ParticleSystem>();
+        //_shootEffect = GetComponentInChildren<ParticleSystem>();
     }
 
-    public void ShootEffect( Collector collector)
-    {
-        if (_shootEffect != null)
-        {
-            _shootEffect.transform.position = collector.transform.position;
-            _shootEffect.Play();
-        }
-    }
+    //public void ShootEffect( Collector collector)
+    //{
+    //    if (_shootEffect != null)
+    //    {
+    //        _shootEffect.transform.position = collector.transform.position;
+    //        _shootEffect.Play();
+    //    }
+    //}
 
     public void Launch(Vector3 diraction)
     {
@@ -30,7 +30,6 @@ public class Bullet : MonoBehaviour
     }
     
     
-
     private void OnTriggerEnter(Collider other)
     {
         Obstacle obstacle = other.GetComponent<Obstacle>();

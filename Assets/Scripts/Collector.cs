@@ -23,11 +23,11 @@ public class Collector : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Item item = other.GetComponent<Item>();
+        Item itemInTrigger = other.GetComponent<Item>();
 
-        if (item != null)
+        if (itemInTrigger != null && _item == null)
         {
-            _item = item;
+            _item = itemInTrigger;
             _isCollectorInTrigger = true;
 
             bool hasItem = false;
@@ -65,18 +65,30 @@ public class Collector : MonoBehaviour
         Vector3 direction = UserInput();
         MovementAndRotation(direction);
 
+        InspectionUsePickup();
+    }
+
+    private Vector3 UserInput()
+    {
+        _xInput = Input.GetAxisRaw("Horizontal");
+        _yInput = Input.GetAxisRaw("Vertical");
+
+        return new Vector3(_xInput, 0f, _yInput).normalized;
+    }
+
+    private void InspectionUsePickup()
+    {
         if (_isCollectorInTrigger && Input.GetKeyDown(KeyCode.F))
         {
             if (_item != null)
             {
                 _item.ProcessPickupItem(this);
-                Destroy(_item.gameObject);
-
+                _item.DestroyItemWithParticles();
                 _item = null;
                 _isCollectorInTrigger = false;
             }
         }
-        else if (!_isCollectorInTrigger && Input.GetKeyDown(KeyCode.F))
+        else if (_isCollectorInTrigger == false && Input.GetKeyDown(KeyCode.F))
         {
             Debug.Log("У сборщика ничего нет!");
         }
@@ -93,13 +105,6 @@ public class Collector : MonoBehaviour
         }
     }
 
-    private Vector3 UserInput()
-    {
-        _xInput = Input.GetAxisRaw("Horizontal");
-        _yInput = Input.GetAxisRaw("Vertical");
-
-        return new Vector3(_xInput, 0f, _yInput).normalized;
-    }
 
     public void AddHealth(int health)
     {
