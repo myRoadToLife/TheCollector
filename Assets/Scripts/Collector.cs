@@ -29,28 +29,13 @@ public class Collector : MonoBehaviour
         {
             _item = itemInTrigger;
             _isCollectorInTrigger = true;
-
             bool hasItem = false;
 
-            foreach (Transform child in transform)
-            {
-                if (child.gameObject.GetComponent<Item>())
-                {
-                    hasItem = true;
-                    Debug.Log("Сборщик уже держит предмет: " + child.name);
-                    break;
-                }
-            }
+            hasItem = CheckingHasItems(hasItem);
 
-            if (hasItem == false)
-            {
-                _item.transform.SetParent(transform);
-                _item.transform.localPosition = _offsetPositionToSetParent;
-                Debug.Log("Сборщик подобрал предмет: " + _item.name);
-            }
+            CanPickupItem(hasItem);
         }
     }
-
     private void OnTriggerExit(Collider other)
     {
         if (_item != null && other.GetComponent<Item>() == _item)
@@ -60,12 +45,38 @@ public class Collector : MonoBehaviour
         }
     }
 
+    private void CanPickupItem(bool hasItem)
+    {
+        if (hasItem == false)
+        {
+            _item.transform.SetParent(transform);
+            _item.transform.localPosition = _offsetPositionToSetParent;
+            Debug.Log("Сборщик подобрал предмет: " + _item.name);
+        }
+    }
+
+    private bool CheckingHasItems(bool hasItem)
+    {
+        foreach (Transform child in transform)
+        {
+            if (child.gameObject.GetComponent<Item>())
+            {
+                hasItem = true;
+                Debug.Log("Сборщик уже держит предмет: " + child.name);
+                break;
+            }
+        }
+
+        return hasItem;
+    }
+
+
     private void Update()
     {
         Vector3 direction = UserInput();
         MovementAndRotation(direction);
 
-        InspectionUsePickup();
+        CheckingUsePickup();
     }
 
     private Vector3 UserInput()
@@ -76,7 +87,7 @@ public class Collector : MonoBehaviour
         return new Vector3(_xInput, 0f, _yInput).normalized;
     }
 
-    private void InspectionUsePickup()
+    private void CheckingUsePickup()
     {
         if (_isCollectorInTrigger && Input.GetKeyDown(KeyCode.F))
         {
